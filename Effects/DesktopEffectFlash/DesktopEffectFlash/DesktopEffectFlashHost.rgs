@@ -1,0 +1,46 @@
+HKCR
+{
+	DesktopEffectFlash.DesktopEffectFlash.1 = s 'DesktopEffectFlashHost Class'
+	{
+		CLSID = s '{B9DD0CF2-4CF1-4676-A3DD-7F7359C30339}'
+	}
+	DesktopEffectFlash.DesktopEffectFlashHo = s 'DesktopEffectFlashHost Class'
+	{
+		CLSID = s '{B9DD0CF2-4CF1-4676-A3DD-7F7359C30339}'
+		CurVer = s 'DesktopEffectFlash.DesktopEffectFlash.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {B9DD0CF2-4CF1-4676-A3DD-7F7359C30339} = s 'DesktopEffectFlashHost Class'
+		{
+			ProgID = s 'DesktopEffectFlash.DesktopEffectFlash.1'
+			VersionIndependentProgID = s 'DesktopEffectFlash.DesktopEffectFlashHo'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{AD518F18-EA03-4D2C-871A-C67A15E407CD}'
+		}
+	}
+}
+
+HKEY_LOCAL_MACHINE
+{
+    NoRemove SOFTWARE
+    {
+        NoRemove AveSoftware
+        {
+            NoRemove AveDesktopEffects
+            {
+                NoRemove Effects
+                {
+                    NoRemove Flash
+                    {
+                        val classid = s '{B9DD0CF2-4CF1-4676-A3DD-7F7359C30339}'
+                    }
+                }
+            }
+        }
+    }
+}

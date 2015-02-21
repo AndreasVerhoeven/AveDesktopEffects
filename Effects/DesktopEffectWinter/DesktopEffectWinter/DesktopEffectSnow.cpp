@@ -91,7 +91,7 @@ void CDesktopEffectSnow::SetDoRandomFlakes(BOOL val)
 					doRandomFlakes);
 
 	HWND hwnd = NULL;
-	host->GetTargetWindow(&hwnd);
+	host->GetHelperWindow(this, &hwnd);
 	if(hwnd != NULL)
 	{
 		flakesPeriod = 0;
@@ -370,6 +370,8 @@ STDMETHODIMP CDesktopEffectSnow::OnD3DStart(IUnknown* directDeviceAsUnknown)
 		system.InitBuckets(250);
 
 	
+	hwnd = NULL;
+	host->GetHelperWindow(this, &hwnd);
 	if(hwnd != NULL)
 		SetTimer(hwnd, 1001, 20, 0);
 
@@ -380,7 +382,7 @@ STDMETHODIMP CDesktopEffectSnow::OnD3DStart(IUnknown* directDeviceAsUnknown)
 STDMETHODIMP CDesktopEffectSnow::OnD3DStop(void)
 {
 	HWND hwnd = NULL;
-	host->GetTargetWindow(&hwnd);
+	host->GetHelperWindow(this, &hwnd);
 	if(hwnd != NULL)
 	{
 		KillTimer(hwnd, 1001);
@@ -504,8 +506,8 @@ STDMETHODIMP CDesktopEffectSnow::OnBeforeD3DSceneStart(void)
 // that is the size of the desktop, with direct mapping texture coords.
 STDMETHODIMP CDesktopEffectSnow::OnD3DSceneStart(void)
 {
-	HWND hwnd = NULL;
-	host->GetTargetWindow(&hwnd);
+	//HWND hwnd = NULL;
+	//host->GetTargetWindow(&hwnd);
 	system.Update(NULL, float(size) / 3.0f);
 	system.Render(directDevice, (float)sceneSize.cx, (float)sceneSize.cy, &particles[0]);
 	if(doRenderGround)
@@ -570,6 +572,17 @@ STDMETHODIMP CDesktopEffectSnow::OnAfterD3DRender(void)
 // If mouse interactivity is needed, this is the place to track mouse movements for example
 // by monitorin WM_MOUSEMOVE.
 STDMETHODIMP CDesktopEffectSnow::OnTargetWindowMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled)
+{
+	//return OnNotificationWindowMessage(hwnd, msg, wParam, lParam, lResult, bHandled);
+	return S_OK;
+}
+
+// Called when there is a message for the notification window.
+// Each effect gets its own notification helper window for use with timers,
+// thread marshalling and such.
+// By calling IAveDesktopEffectsHost::GetHelperWindow(this, &hwnd) this 
+// window will be created and a handle to it will be obtained.
+STDMETHODIMP CDesktopEffectSnow::OnNotificationWindowMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled)
 {
 	if(WM_TIMER == msg && 444 == wParam)
 	{

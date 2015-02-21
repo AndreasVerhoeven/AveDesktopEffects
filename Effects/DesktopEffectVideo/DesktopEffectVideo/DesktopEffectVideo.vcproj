@@ -357,6 +357,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
+				OutputFile="..\..\..\DesktopEffects64\$(ProjectName).dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\DesktopEffectVideo.def"
 				GenerateDebugInformation="true"
@@ -599,5 +600,9 @@
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="DesktopEffectVideo.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

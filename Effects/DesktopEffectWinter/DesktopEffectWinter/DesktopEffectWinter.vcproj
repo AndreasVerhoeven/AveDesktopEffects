@@ -353,6 +353,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
+				OutputFile="..\..\..\DesktopEffects64\$(ProjectName).dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\DesktopEffectWinter.def"
 				GenerateDebugInformation="true"

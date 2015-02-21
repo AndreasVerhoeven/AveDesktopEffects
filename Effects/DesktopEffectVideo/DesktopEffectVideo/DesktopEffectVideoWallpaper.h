@@ -5,9 +5,9 @@
 
 #include "DesktopEffectVideo.h"
 #include "stdafx.h"
-#include "X:\coding\DesktopFxSDK\AveDesktopEffects.h"
-#include "X:\coding\DesktopFxSDK\AveDesktopEffectDefines.h"
-#include "X:\coding\DesktopFxSDK\AveRegFuncs.h"
+#include "..\..\DesktopFxSDK\AveDesktopEffects.h"
+#include "..\..\DesktopFxSDK\AveDesktopEffectDefines.h"
+#include "..\..\DesktopFxSDK\AveRegFuncs.h"
 #include <vector>
 #include <dshow.h>
 #include <Vmr9.h>
@@ -56,6 +56,8 @@ protected:
 
 	CConfigureDlg configDlg;
 
+	BOOL stretchOverWholeCanvas;
+
 public:
 	CDesktopEffectVideoWallpaper() : configDlg(this)
 	{
@@ -66,10 +68,15 @@ public:
 		host = NULL;
 		directDevice = NULL;
 		texture = NULL;
+
+		stretchOverWholeCanvas = FALSE;
 	}
 
 	const WCHAR* GetFileName() { return fileName; }
 	void SetFileName(const WCHAR* fileName);
+
+	BOOL GetStretchOverWholeCanvas() {  return stretchOverWholeCanvas;};
+	void SetStretchOverWholeCanvas(BOOL val);
 
 DECLARE_REGISTRY_RESOURCEID(IDR_DESKTOPEFFECTVIDEOWALLPAPER)
 
@@ -128,6 +135,7 @@ public:
 	STDMETHOD(GetConfigurationWindow)(HWND* hwnd, HWND parent);
 	STDMETHOD(OnNotification)(DWORD dwNotification);
 	STDMETHOD(DoesSupport)(DWORD* pFlag);
+	STDMETHOD(OnNotificationWindowMessage)(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled);
 
 	STDMETHOD(InitializeDevice)( 
 	 DWORD_PTR dwUserID,

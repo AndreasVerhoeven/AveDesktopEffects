@@ -5,8 +5,8 @@
 
 #include "DesktopEffectScribble.h"
 
-#include "X:\coding\DesktopFxSDK\AveDesktopEffects.h"
-#include "X:\coding\DesktopFxSDK\AveDesktopEffectDefines.h"
+#include "..\..\DesktopFxSDK\AveDesktopEffects.h"
+#include "..\..\DesktopFxSDK\AveDesktopEffectDefines.h"
 
 
 #if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
@@ -107,6 +107,7 @@ public:
 	STDMETHOD(GetConfigurationWindow)(HWND* hwnd, HWND parent);
 	STDMETHOD(OnNotification)(DWORD dwNotification);
 	STDMETHOD(DoesSupport)(DWORD* pFlag);
+	STDMETHOD(OnNotificationWindowMessage)(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled);
 
 };
 

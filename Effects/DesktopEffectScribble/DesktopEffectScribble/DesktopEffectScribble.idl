@@ -6,7 +6,7 @@
 
 import "oaidl.idl";
 import "ocidl.idl";
-import "X:\coding\DesktopFxSDK\AveDesktopEffects.idl";
+import "..\..\DesktopFxSdk\AveDesktopEffects.idl";
 
 [
 	object,

@@ -7,8 +7,7 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "winres.h"
-
+#include "winres.h"
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -113,6 +112,8 @@ BEGIN
     LTEXT           "Video to use",IDC_STATIC,15,26,40,8
     EDITTEXT        IDC_VIDEO,13,36,236,14,ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "Browse...",IDBROWSE,255,36,50,14
+    CONTROL         "Output video on each monitor once",IDC_OUTPUTPERMONITOR,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,66,129,10
 END
 
 

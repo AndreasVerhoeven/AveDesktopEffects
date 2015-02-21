@@ -173,7 +173,7 @@ STDMETHODIMP CDesktopEffectAutoWallpaperFader::OnD3DStart(IUnknown* directDevice
 		return E_INVALIDARG;
 	
 	HWND hwnd = NULL;
-	host->GetTargetWindow(&hwnd);
+	host->GetHelperWindow(this, &hwnd);
 
 	//CLSID clsid = {0};
 	//CLSIDFromString(L"{D0223B96-BF7A-43fd-92BD-A43B0D82B9EB}", &clsid);
@@ -188,7 +188,7 @@ STDMETHODIMP CDesktopEffectAutoWallpaperFader::OnD3DStart(IUnknown* directDevice
 STDMETHODIMP CDesktopEffectAutoWallpaperFader::OnD3DStop(void)
 {
 	HWND hwnd = NULL;
-	host->GetTargetWindow(&hwnd);
+	host->GetHelperWindow(this, &hwnd);
 	if(hwnd != NULL)
 	{
 		KillTimer(hwnd, 555);
@@ -374,6 +374,16 @@ STDMETHODIMP CDesktopEffectAutoWallpaperFader::OnAfterD3DRender(void)
 // by monitorin WM_MOUSEMOVE.
 STDMETHODIMP CDesktopEffectAutoWallpaperFader::OnTargetWindowMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled)
 {
+	return S_OK;
+}
+
+// Called when there is a message for the notification window.
+// Each effect gets its own notification helper window for use with timers,
+// thread marshalling and such.
+// By calling IAveDesktopEffectsHost::GetHelperWindow(this, &hwnd) this 
+// window will be created and a handle to it will be obtained.
+STDMETHODIMP CDesktopEffectAutoWallpaperFader::OnNotificationWindowMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled)
+{
 	if(WM_TIMER == msg && 777 == wParam)
 	{
 		*bHandled = TRUE;
@@ -472,7 +482,7 @@ STDMETHODIMP CDesktopEffectAutoWallpaperFader::OnNotification(DWORD dwNotificati
 		}
 
 		HWND hwnd = NULL;
-		host->GetTargetWindow(&hwnd);
+		host->GetHelperWindow(this,&hwnd);
 		if(hwnd != NULL)
 		{
 			SetTimer(hwnd, 777, 1000, NULL);

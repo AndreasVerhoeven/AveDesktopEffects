@@ -105,7 +105,7 @@ IDR_PNG1                PNG                     "icon.png"
 // Bitmap
 //
 
-IDB_BITMAP1             BITMAP                  "C:\\Particle.bmp"
+IDB_BITMAP1             BITMAP                  "Particle.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

@@ -1,0 +1,34 @@
+// DesktopEffectSparkFollower.idl : IDL source for DesktopEffectSparkFollower
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DesktopEffectSparkFollower.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(731CF036-8506-4DE5-9857-98667F9D0D67),
+	helpstring("ICDesktopEffectSparkle Interface"),
+	pointer_default(unique)
+]
+interface ICDesktopEffectSparkle : IUnknown{
+};
+[
+	uuid(0BFCBC0A-66FB-428D-BE84-564742E80AFF),
+	version(1.0),
+	helpstring("DesktopEffectSparkFollower 1.0 Type Library")
+]
+library DesktopEffectSparkFollowerLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(D9ED8807-9D64-4AC3-B1F2-C0FB05BD63AF),
+		helpstring("CDesktopEffectSparkle Class")
+	]
+	coclass CDesktopEffectSparkle
+	{
+		[default] interface ICDesktopEffectSparkle;
+	};
+};

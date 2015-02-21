@@ -1,0 +1,26 @@
+ong C4, long C5
+    , long C6, long C7, long C8, long C9, long C10, long C11, long C12
+    , long C13, long C14, long C15
+    >
+struct vector_c<
+          T, C0, C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12, C13, C14
+        , C15, LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX
+        >
+    : vector16_c<
+          T, C0, C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12, C13, C14
+        , C15
+        >
+{
+    typedef typename vector16_c< T,C0,C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13,C14,C15 >::type type;
+};
+
+template<
+      typename T, long C0, long C1, long C2, long C3, long C4, long C5
+    , long C6, long C7, long C8, long C9, long C10, long C11, long C12
+    , long C13, long C14, long C15, long C16
+    >
+struct vector_c<
+          T, C0, C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12, C13, C14
+        , C15, C16, LONG_MAX, LONG_MAX, LONG_MAX
+        >
+    

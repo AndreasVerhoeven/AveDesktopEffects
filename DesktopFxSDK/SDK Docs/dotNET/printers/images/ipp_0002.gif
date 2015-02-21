@@ -1,0 +1,48 @@
+C5,C6 >::type type;
+};
+
+template<
+      typename T, long C0, long C1, long C2, long C3, long C4, long C5
+    , long C6, long C7
+    >
+struct vector_c<
+          T, C0, C1, C2, C3, C4, C5, C6, C7, LONG_MAX, LONG_MAX, LONG_MAX
+        , LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX
+        , LONG_MAX, LONG_MAX
+        >
+    : vector8_c< T,C0,C1,C2,C3,C4,C5,C6,C7 >
+{
+    typedef typename vector8_c< T,C0,C1,C2,C3,C4,C5,C6,C7 >::type type;
+};
+
+template<
+      typename T, long C0, long C1, long C2, long C3, long C4, long C5
+    , long C6, long C7, long C8
+    >
+struct vector_c<
+          T, C0, C1, C2, C3, C4, C5, C6, C7, C8, LONG_MAX, LONG_MAX, LONG_MAX
+        , LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX
+        , LONG_MAX
+        >
+    : vector9_c< T,C0,C1,C2,C3,C4,C5,C6,C7,C8 >
+{
+    typedef typename vector9_c< T,C0,C1,C2,C3,C4,C5,C6,C7,C8 >::type type;
+};
+
+template<
+      typename T, long C0, long C1, long C2, long C3, long C4, long C5
+    , long C6, long C7, long C8, long C9
+    >
+struct vector_c<
+          T, C0, C1, C2, C3, C4, C5, C6, C7, C8, C9, LONG_MAX, LONG_MAX
+        , LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX, LONG_MAX
+        , LONG_MAX
+        >
+    : vector10_c< T,C0,C1,C2,C3,C4,C5,C6,C7,C8,C9 >
+{
+    typedef typename vector10_c< T,C0,C1,C2,C3,C4,C5,C6,C7,C8,C9 >::type type;
+};
+
+template<
+      typename T, long C0, long C1, long C2, long C3, long C4, long C5
+    , long 

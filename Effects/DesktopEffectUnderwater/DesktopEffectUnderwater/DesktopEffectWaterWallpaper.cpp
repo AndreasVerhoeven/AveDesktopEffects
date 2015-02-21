@@ -583,7 +583,7 @@ STDMETHODIMP CDesktopEffectWaterWallpaper::OnD3DStart(IUnknown* directDeviceAsUn
 	}	*/
 	
 	HWND hwnd = NULL;
-	host->GetTargetWindow(&hwnd);
+	host->GetHelperWindow(this, &hwnd);
 	if(hwnd != NULL)
 		SetTimer(hwnd, 1001, 20, 0);
 
@@ -594,7 +594,7 @@ STDMETHODIMP CDesktopEffectWaterWallpaper::OnD3DStart(IUnknown* directDeviceAsUn
 STDMETHODIMP CDesktopEffectWaterWallpaper::OnD3DStop(void)
 {
 	HWND hwnd = NULL;
-	host->GetTargetWindow(&hwnd);
+	host->GetHelperWindow(this, &hwnd);
 	if(hwnd != NULL)
 		KillTimer(hwnd, 1001);
 
@@ -852,12 +852,12 @@ STDMETHODIMP CDesktopEffectWaterWallpaper::OnAfterD3DRender(void)
 	return S_OK;
 }
 
-// Called when the target window (the desktops listview often) receives a message.
-// set lResult to the desired return value of the MsgProc and set bHandled to TRUE
-// if this message should not be passed to the original MsgProc of the target window.
-// If mouse interactivity is needed, this is the place to track mouse movements for example
-// by monitorin WM_MOUSEMOVE.
-STDMETHODIMP CDesktopEffectWaterWallpaper::OnTargetWindowMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled)
+// Called when there is a message for the notification window.
+// Each effect gets its own notification helper window for use with timers,
+// thread marshalling and such.
+// By calling IAveDesktopEffectsHost::GetHelperWindow(this, &hwnd) this 
+// window will be created and a handle to it will be obtained.
+STDMETHODIMP CDesktopEffectWaterWallpaper::OnNotificationWindowMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled)
 {
 	if(WM_TIMER == msg && 1001 == wParam)
 	{
@@ -866,6 +866,17 @@ STDMETHODIMP CDesktopEffectWaterWallpaper::OnTargetWindowMessage(HWND hwnd, UINT
 		host->D3DRender();
 		
 	}
+	return S_OK;
+}
+
+// Called when the target window (the desktops listview often) receives a message.
+// set lResult to the desired return value of the MsgProc and set bHandled to TRUE
+// if this message should not be passed to the original MsgProc of the target window.
+// If mouse interactivity is needed, this is the place to track mouse movements for example
+// by monitorin WM_MOUSEMOVE.
+STDMETHODIMP CDesktopEffectWaterWallpaper::OnTargetWindowMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled)
+{
+
 	return S_OK;
 }
 

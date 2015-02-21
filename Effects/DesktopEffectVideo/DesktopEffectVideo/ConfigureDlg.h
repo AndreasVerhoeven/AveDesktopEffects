@@ -23,10 +23,12 @@ BEGIN_MSG_MAP(CConfigureDlg)
 	COMMAND_HANDLER(IDBROWSE, BN_CLICKED, OnBnBrowseConfig)
 
 	// other stuff
-    REFLECT_NOTIFICATIONS()
+    //REFLECT_NOTIFICATIONS()
+	COMMAND_HANDLER(IDC_OUTPUTPERMONITOR, BN_CLICKED, OnBnClickedOutputpermonitor)
 END_MSG_MAP()
 
 	LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnBnBrowseConfig(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	LRESULT OnBnClickedOutputpermonitor(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };

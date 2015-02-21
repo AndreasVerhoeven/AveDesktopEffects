@@ -1,0 +1,758 @@
+<html>
+	<head>
+		<title>DesktopEffects SDK</title>
+
+	<style type="text/css">
+
+		pre
+		{
+			border: 1px dashed black;
+			background-color: silver;
+			margin: 2px;
+			margin-top: 5px;
+			padding: 6px;
+			font-weight: 700;
+			font-family: Consolas, Courier New;
+		}
+
+		.h1p
+		{
+			padding-left: 20px;
+			padding-left: 10px;
+			border: 1px solid gray;
+		}
+		.h2p
+		{
+			margin-right: 80px;
+			padding-left: 20px;
+			border: 1px solid gray;
+		}
+
+		.p3method
+		{
+			border-left: 1px solid gray;
+			border-right: 1px solid gray;
+			border-bottom: 1px solid gray;
+			padding-top: 4px;
+
+			font-family: Segoe UI, Verdana;
+
+			background-color: #EEEEEE;
+		}
+		.p3method li
+		{
+			margin-bottom: 10px;
+		}
+
+		.p3method em
+		{
+			font-weight: 700;
+		}
+
+		.h3method
+		{
+			border-left: 1px solid gray;
+			border-right: 1px solid gray;
+			border-top: 1px solid gray;
+			border-bottom: 1px dashed gray;
+			background-color: #EEEEEE;
+
+			font-family: Consolas, Courier New;
+			margin-bottom: 0px;
+		}
+
+
+		.p3methodgdi
+		{
+			border-left: 1px solid gray;
+			border-right: 1px solid gray;
+			border-bottom: 1px solid gray;
+			padding-top: 4px;
+
+			font-family: Segoe UI, Verdana;
+
+			background-color: #ADC0FF;
+		}
+		.p3methodgdi li
+		{
+			margin-bottom: 10px;
+		}
+
+		.p3methodgdi em
+		{
+			font-weight: 700;
+		}
+
+		.h3methodgdi
+		{
+			border-left: 1px solid gray;
+			border-right: 1px solid gray;
+			border-top: 1px solid gray;
+			border-bottom: 1px dashed gray;
+			background-color: #ADC0FF;
+
+			font-family: Consolas, Courier New;
+			margin-bottom: 0px;
+		}
+
+		.p3methodgdi strong
+		{
+			color: #7D90CE;	
+		}
+
+
+		.p3methodd3d
+		{
+			border-left: 1px solid gray;
+			border-right: 1px solid gray;
+			border-bottom: 1px solid gray;
+			padding-top: 4px;
+
+			font-family: Segoe UI, Verdana;
+
+			background-color: #F7E6C1; 
+		}
+		.p3methodd3d li
+		{
+			margin-bottom: 10px;
+		}
+
+		.p3methodd3d em
+		{
+			font-weight: 700;
+		}
+
+		.h3methodd3d
+		{
+			border-left: 1px solid gray;
+			border-right: 1px solid gray;
+			border-top: 1px solid gray;
+			border-bottom: 1px dashed gray;
+			background-color: #F7E6C1;
+
+			font-family: Consolas, Courier New;
+			margin-bottom: 0px;
+		}
+
+		.p3methodd3d strong
+		{
+			color: #D7A691;	
+		}
+
+	</style>
+
+	</head>
+
+
+
+<body>
+	<h1>0. Version</h1>
+		<div class="h1p">
+		Ave's DesktopEffects is copyright Andreas Verhoeven 2008. DesktopEffects nor its SDK nor documentation
+		can be distributed <em>WITHOUT</em> explicit permission from the author, Andreas Verhoeven.<br/><br/>
+
+		Version: 2008, April 12
+		</div>
+
+	<h1>1. Introduction</h1>
+		<div class="h1p">
+
+		<h2>What is it?</h2>
+		Ave's DesktopEffects changes the desktop background from a static bitmap into a <em>dynamic</em> rendered background. It does this by taking over the desktops rendering and changing it, possibly with the help of Direct3D.<br/>By allowing Direct3D rendering as the desktops wallpaper, pretty effects can be created without taxing the CPU.<br/><br/>
+		<em>DesktopEffects runs on Vista with or without DWM and on Windows XP</em>
+
+		<h2>Plugins</h2>
+		Ave's  DesktopEffects uses a plugin mechanism to allow new effects being added. Every effect in 
+		DesktopEffects, is an COM object that implements a specific COM interface. This COM object then gets
+		hosted inside DesktopEffect and will get called by DesktopEffects to render the desktop.<br/><br/>
+
+		<h2>Getting Started</h2>
+		The quickest way to start a new effect with Visual Studio is to start a new <i>ATL project</i>, pick <i>DLL</i>.<br/>
+		Next, add a new <i>ATL Simple Object</i> through the <i>Class Wizard</i>, give it a name and, on the <i>Options</i> page, check the <i><b>Custom</b></i> radio-button.<br/>.
+		Now, let the COM object extend <i>IAveDesktopEffect</i> and add a <i>COM_INTERFACE_ENTRY</i> to the interface map for <i>IAveDesktopEffect</i>.<br/>
+		Then, <i>#include</i> <i>AveDesktopEffects.h</i> and <i>AveDesktopEffectDefines.h</i>.<br/>
+		Now, you are ready to implement the IAveDesktopEffect.h methods. Most of the methods will be stub implementations which can be taken from one of the example files.
+		</div>
+
+		<h2>Files</h2>
+		<ul>
+			<li><b>DesktopEffects Documentation.html</b> this general documentation file</li>
+			<li><b>Support</b> extra support files, such as Registry functions</li>
+			<li><b>Includes</b> the main header files to be included</li>
+			<li><b>Examples</b> examples of effects, such as the Sparkle effect</li>
+			<li><b>DefaultEffect</b> A default stub implementation of an Effect</li>
+		</ul>
+
+	<h1>2. Architecture</h1>
+	<div class="h1p">
+		
+		<h2>2.1 Host</h2>
+		<div class="h2p">
+		<p>
+		DesktopEffects uses a straightforward architecture, where there is one Host object that will
+		<i>host</i> Effects. The host will make sure that the environment will be correctly set up and
+		provides everything for rendering onto the desktop.
+		</p>
+
+		<p>
+		The host implements the <b>IAveDesktopEffectsHost</b> interface, which provides the following functionality:
+		<ul>
+			<li>Loading Effects</li>
+			<li>Rendering the desktop* in GDI mode</li>
+			<li>Rendering the desktop in Direct3D mode</li>
+			<li>Stop rendering the desktop</li>
+			<li>Providing a D3D render loop</li>
+		</ul>
+		(*note with the "desktop" we mean the background + icons of the shell, not the desktop of the
+			windowmanager where all windows live in).
+		</p>
+		</div>
+
+
+		<h2>2.2 Effect</h2>
+		<div class="h1p">
+		<p>
+		An effect will be hosted inside the Host object and is able to make requests, such as <i>start rendering</i>, to the host. The host object, in turn, will perform the operation and when needed, 
+		will call back into the effect.<br/><br/>
+		</p>
+
+		<p>
+		Effects will need to implement the <b>IAveDesktopEffect</b> to be used as an effect inside
+		DesktopEffects. Effects need to provide the following functionality:
+		<ul>
+			<li>Providing meta data about the effect such as name, an icon, author, description</li>
+			<li>initialization and uninitialization</li>
+			<li>Start, stop and pause</li>
+			<li><b>Optional</b> GDI rendering of the desktop background</li>
+			<li><b>Optional</b> Direct3D rendering of the desktop background</li>
+			<li><b>Optional</b> Configuration dialog</li>
+		</ul>
+
+		Next to that, Effects will also be able to:
+		<ul>
+			<li>Get notifications about changes in the rendering state</li>
+			<li>Get a handle to the target window on where the rendering will be placed</li>
+			<li>Make requests to the Host object</li>
+		</ul>
+		</p>
+		</div>
+	</div>
+
+	<h1>3. IAveDesktopEffectsHost</h1>
+	<div class="h1p">
+		DesktopEffect will host Effects inside an object that implements a IAveDesktopEffectsHost.
+		A pointer to this interface will be given to Effects when they are initialized.
+		
+		<h2>3.1 Methods</h2>
+		<div class="h2p">
+		An overview of the methods in this interface will be given. All methods adher to the normal COM rules;
+		they return a HRESULT with S_OK on success or an errorcode on error (such as E_FAIL, E_INVALIDARG, E_POINTER). Furthermore, out parameters will be used to return values in, in parameters will be used to read values from.
+
+		<h3 class="h3method" class="h3method">HRESULT Start(void)</h3>
+		<div class="p3method">
+			Makes DesktopEffects take over the desktop rendering from the shell so that an Effect can render
+			onto the desktop.
+		</div>
+
+		<h3 class="h3method">HRESULT Stop(void)</h3>
+		<div class="p3method">
+			Makes DesktopEffects stop taking over the desktop rendering and let the shell render the desktop again.
+		</div>
+
+		<h3 class="h3method">HRESULT IsRunning([out] VARIANT_BOOL* isRunning)</h3>
+		<div class="p3method">
+			Sets *isRunning to VARIANT_TRUE iff DesktopEffects is rendering the desktop, sets *isRunning to VARIANT_FALSE
+		</div>
+
+		<h3 class="h3method">HRESULT GetTargetWindow([out] HWND* targetWindow)</h3>
+		<div class="p3method">
+			Sets *targetWindow to the handle of the window where the desktop will be rendered onto.
+		</div>
+
+		<h3 class="h3method">HRESULT LoadPluginByCLSID([in] BSTR clsid)</h3>
+		<div class="p3method">
+			Loads an IAveDesktopEffect plugin by its CLSID. The parameter is passed in as a string (BSTR) instead of a CLSID.
+		</div>
+
+
+
+		<h3 class="h3method">HRESULT IsD3DActive([out] VARIANT_BOOL* isActive)</h3>
+		<div class="p3method">
+			Sets *isActive to VARIANT_TRUE iff is Direct3D rendering of the desktop is activated. If GDI rendering is enabled or the shell is still rendering the desktop, *isActive will be set to VARIANT_FALSE.
+		</div>
+
+
+		<h3 class="h3method">HRESULT D3DRenderIconBuffer([in] DWORD mode)</h3>
+		<div class="p3method">
+			In D3D mode, DesktopEffects takes care of rendering everything other than the desktop background. Thus, The host will need to manage the icons on the desktop. Since some effects might want to peform special effects to the icons on the desktop, it is possible to let the host render the "icon buffer" into the current D3D scene by calling this method.<br/>
+			The following modes are supported thru the <i>mode</i> parameter:
+			<ul>
+				<li><b>AVE_D3D_RENDERICONBUFFER_FULL</b> Renders the icons as it would do normally onto the D3D scene. This includes changing the view-matrixes, textures, lightning and other D3D parameters so that the icons are rendered normally.</li>
+
+				<li><b>AVE_D3D_RENDERICONBUFFER_ONLY_DRAW</b> Renders the icons by only outputting a textured quad directly onto the D3D scene. No other parameters than texture0 are changed.</li>
+
+				<li><b>AVE_D3D_RENDERICONBUFFER_ONLY_SET_TEXTURE</b> Does not render the icons at all, only sets texture0 to a texture that reflect the icons on the desktop. </li>
+
+				It must be noted that no direct access to the icon buffer is really given, since DesktopEffects never wants to mess with the users icons: an effect should really be on the background.
+
+			</ul>
+		</div>
+
+		<h3 class="h3method">HRESULT StartD3DMode(void)</h3>
+		<div class="p3method">
+			Makes DesktopEffects render the desktop using Direct3D, instead of GDI.	This call must be matched with a call to <i>StopD3DMode()</i>. <br/>
+			Multiple calls to this function must be matched with the same number of calls to StopD3DMode() to stop rendering the desktop using Direct3D. In other words, calls to this function are counted.
+		</div>
+
+		<h3 class="h3method">HRESULT StopD3DMode(void)</h3>
+		<div class="p3method">
+			Makes DesktopEffects stop rendering the desktop using Direct3D and return to GDI rendering. This call must be proceeded by a call to <i>StartD3DMode</i>.
+		</div>
+
+		<h3 class="h3method">HRESULT D3DRender(void)</h3>
+		<div class="p3method">
+			When in D3DMode, will make DesktopEffects render the desktop onto a D3D scene, while making callbacks to the current loaded IAveDesktopEffect. Basically, this function makes DesktopEffects do one cycle of the rendering loop directly.<br/><br/>
+
+			It is to note that the desktop might still be rendered into a D3D scene <em>without calling this function</em>, because of updates to the desktop itself (such as selecting icons). If that is the case, DesktopEffects will act like <i>D3DRender()</i> was called and thus perform a render cycle when it thinks it is necessary. 
+		</div>
+
+		<h3 class="h3method">HRESULT MakeSureIsInitialized(void)</h3>
+		<div class="p3method">
+			Makes sure DesktopEffect is initialized properly. Normally, this function does not have to be called.
+		</div>
+
+		<h3 class="h3method">HRESULT GetWallpaperTexture([out] IUnknown** texture)</h3>
+		<div class="p3method">
+			In D3D rendering mode, this function will return a texture that reflects the user's bitmap wallpaper for use by the IAveDesktopEffect object.<br/>
+			For example, an effect can use this function to get a texture of the user's wallpaper and render it completely morphed inside the D3D scene onto the desktop.
+		</div>
+		
+		<h3 class="h3method">HRESULT GetWallpaperTexture([out] IUnknown** texture)</h3>
+		<div class="p3method">
+			In D3D rendering mode, this function will return a texture that reflects the user's bitmap wallpaper for use by the IAveDesktopEffect object.<br/>
+			For example, an effect can use this function to get a texture of the user's wallpaper and render it completely morphed inside the D3D scene onto the desktop.<br/><br/>
+			
+			The texture will be passed backed as an IUnknown pointer to the caller; The caller can obtain a reference to the DirectX texture object by <i>QueryInterface()'ing </i> the IUnknown object for <b>IID_IDirect3DTexture9</b>. <br/><br/>
+
+			The caller is responsibile for calling <i>Release()</i> on the returned IUnknown object.
+
+		</div>
+
+		<h3 class="h3method">HRESULT SetWallpaperTexture([in] IUnknown* texture)</h3>
+		<div class="p3method">
+			In D3D rendering mode, this function will change the wallpaper texture used while rendering the desktop onto a D3D scene to another texture. If the texture gets actually rendered, depends on the preferences and flags of the IAveDesktopEffect object.<br/>
+			This function is, for example, usefull when implementing a wallpaper changer. Instead of implementing the rendering of the wallpaper, the effect can simply call this function with the new wallpapers texture and provide stub implementations for the D3D render functions.<br/><br/>
+			
+			The texture needs to be passed in as an IUnknown pointer to the callee, but the IUknown must be  able to be <i>QueryInterface()'ed</i> for <b>IID_IDirect3DTexture9</b>. <br/><br/>
+
+			The callee is responsibile for calling <i>Release()</i> on the passed IUnknown object.
+
+		</div>	
+
+		<h3 class="h3method">HRESULT GetHelperWindow([in] IUnknown* effectAsUnknown, [out,retval] HWND* hwnd)</h3>
+		<div class="p3method">
+			This function will set *hwnd to a handle to a window that can be freely used by the calling effect for timers, thread marshalling and such. This "helper" window is created on demand and only once per effect and serves only as a convenience for effects so that they don't have to setup a helper window themselves.<br/><br/>
+			
+			The effect should pass in its itself as an IUnknown, so that the caller can be uniquely identified. This is necessary because every effect has its own helper window.<br/><br/>
+
+			When a helper window is created, all messages received by this helper window will be passed to the  effect by means of its <i>OnNotificationWindowMessage()</i> callback.<br/><br/>
+
+			Usually, a call to this method would look like:
+			<pre>
+HWND helperWindow = NULL;
+host->GetHelperWindow(this, &helperWindow);
+			</pre>
+		</div>	
+
+		
+
+		</div>
+
+		<h2>3.2 States</h2>
+		<div class="h2p">
+			DesktopEffects can be in different states, which can be set and read by the IAveDesktopEffectsHost interface. A brief overview of the states will be given here.
+
+			<h3 class="h3state">Running states</h3>
+			<div class="p3state">
+				DesktopEffects can be in the following running states:
+				<ul>
+					<li><b>Not running</b>the desktop rendering is done by the shell and no Effect is loaded</li>
+					<li><b>Running+Stopped</b>the desktop rendering is taken over by DesktopEffects and an Effect is loaded</li>
+					<li><b>Running+Started</b>the desktop rendering is done by DesktopEffects and the Effect is notified by having its OnStart() method. The effect normally renders the desktops background in this case.</li>
+					<li><b>Running+Paused</b>the desktop is rendered by the shell, but the effect is loaded</li>
+				</ul>
+			</div>
+
+			<h3 class="h3state">Rendering states</h3>
+			<div class="p3state">
+				DesktopEffects knows three rendering states:
+				<ul>
+					<li><b>Shell</b> the desktop is rendered by the shell</li>
+					<li><b>GDI</b> the desktop is rendered by DesktopEffects using GDI</li>
+					<li><b>Direct3D (D3D)</b> the desktop is rendered by DesktopEffects onto a Direct3D scene</li>
+				</ul>
+			</div>
+
+
+		</div>
+
+	</div>
+
+	<h1>4. IAveDesktopEffect</h1>
+	<div class="h1p">
+
+		<h2>4.1 Methods</h2>
+		<div class="h2p">
+
+		<h3 class="h3method">HRESULT GetName([out] BSTR* pName)</h3>
+		<div class="p3method">
+			Gets called when DesktopEffects wants to know the name of the Effect. The callee should assign a BSTR with the name of the effect to *pName. The caller will free the BSTR.
+		</div>
+
+		<h3 class="h3method">HRESULT GetAuthor([out] BSTR* pAuthor</h3>
+		<div class="p3method">
+			Gets called when DesktopEffects wants to know the author of the Effect. The callee should assign a BSTR with the author of the effect to *pAuthor. The caller will free the BSTR.
+		</div>
+
+		<h3 class="h3method">GetDescription([out] BSTR* pDescription)</h3>
+		<div class="p3method">
+			Gets called when DesktopEffects wants to know the description of the Effect. The callee should assign a BSTR with the description of the effect to *pDescription. The caller will free the BSTR.
+		</div>
+
+		<h3 class="h3method">HRESULT GetIcon([out] HBITMAP* pHBitmap)</h3>
+		<div class="p3method">
+			Gets called when DesktopEffects needs to display an icon for the effect. The callee should allocate a 64x64 ARGB HBITMAP containing the icon for the effect and assign it to *pHBitmap. The caller will free the HBITMAP.
+		</div>
+
+		<h3 class="h3method">HRESULT GetCooperationFlags([out] DWORD* pFlags)</h3>
+		<div class="p3method">
+			Not implemented at the moment. Return S_OK.
+		</div>
+
+		<h3 class="h3method">HRESULT OnInitialize([in] IAveDesktopEffectsHost* host)</h3>
+		<div class="p3method">
+			Called when an Effect is loaded and will be used inside DesktopEffects.<br/>
+			The Effect should initialize itself and store the pointer to the IAveDesktopEffectsHost object for future use.<br/><br/>
+			<em>Important: The effect should not start rendering as a result of this call nor ask the host to Start()</em>, since it might be possible that an effect is initialized already, but the user does not want DesktopEffect to render.
+		</div>
+
+		<h3 class="h3method">HRESULT OnUninitialize(void)</h3>
+		<div class="p3method">
+			Called when an Effect is about to be unloaded. The Effect should release all resources it has and, importantly, <i>Release()</i> the reference it has to the IAveDesktopEffectsHost object it obtained.<br/><br/>
+			Calls to this function will always be matched with a previous call to <i>OnInitialize()</i>.
+		</div>
+
+		<h3 class="h3method">HRESULT OnStart(void)</h3>
+		<div class="p3method">
+			Called when DesktopEffects took over the desktop rendering. At this point, the effect can start rendering in GDI mode or request to start rendering in D3D mode by calling the host's <i>StartD3DMode()</i> method.
+		</div>
+
+		<h3 class="h3method">HRESULT OnStop(void)</h3>
+		<div class="p3method">
+			Called when DesktopEffects stops rendering the desktop or when the effect is unloaded. The effect should stop rendering in GDI mode or request to stop D3D mode rendering by calling the host's <i>StopD3DMode()</i> method.
+		</div>
+
+		<h3 class="h3method">HRESULT OnPause(void)</h3>
+		<div class="p3method">
+			Called when rendering is paused and not performed by DesktopEffects.
+		</div>
+
+		<h3 class="h3method">HRESULT OnResume(void)</h3>
+		<div class="p3method">
+			Called when rendering is resumed by DesktopEffects after a matching call to OnPause().
+		</div>
+
+		<h3 class="h3method">HRESULT OnD3DStart([in] IUnknown* directDevice)</h3>
+		<div class="p3method">
+			Called as a result of DesktopEffect starting up Direct3D rendering mode. At this point, the desktop will be rendered onto a D3D scene.<br/><br/>
+			A pointer to an IDirect3DDevice9 object used for rendering the desktop is passed in thru the directDevice parameter as an IUnknown. The effect should <i>QueryInterface()</i> for <em>IID_IDirect3DDevice9</em> and store the resulting IDirect3DDevice9 reference for future usage in the rendering cycle.
+		</div>
+
+		<h3 class="h3method">HRESULT OnD3DStop(void)</h3>
+		<div class="p3method">
+			Called whenever D3D mode rendering is stopped, either of a result of a call to the host's <i>StopD3dMode()</i> method, or of an external influence.<br/>
+			The Effect should stop all D3D rendering and free all D3D rendering related resources, including the previously obtained reference to the <em>IDirect3DDevice9</em> object by calling its <i>Release()</i> method.
+		</div>
+
+		<h3 class="h3methodgdi">HRESULT OnBeforeGdiBackgroundUpdate([in] HDC hdc, [in] const RECT* updateRect, [out] DWORD* pWhatToDo)</h3>
+		<div class="p3methodgdi">
+			<strong>GDI Render Cycle</strong><br/>
+			Called before the background of the desktop is updated in GDI rendering mode.<br/>
+			<ul>
+
+				<li><b>hdc</b> is a handle to the device context used for drawing and can be used to modify the background or its properties</li>
+
+				<li><b>updateRect</b> a pointer to a rectangle describing the part of the desktop that gets updated</li>
+				<li><b>pWhatToDo</b> set *pWhatToDo to one of the following:<br/><br/>
+					<ul>
+						<li><i><b>AVE_GDI_BACKGROUND_PAINT_DO_NOT_OVERRIDE</b></i> let the normal background be painted. (default in GDI mode)</li>
+
+						<li><i><b>AVE_GDI_BACKGROUND_PAINT_DO_NOT_CLEAR</b></i> do not clear the background with solid black</li>
+
+						<li><i><b>AVE_GDI_BACKGROUND_PAINT_DO_CLEAR</b></i> clear the background with solid black. (default in D3D mode)</li>
+
+						<li><i><b>AVE_GDI_WANTS_TO_RENDER_OVER_DEFAULT_BG</b></i> paint the normal background, and after that, call the Effects OnAfterGdiBackgroundUpdate()</li>
+					</ul>
+				<li>
+		</div>
+
+		<h3 class="h3methodgdi">HRESULT OnAfterGdiBackgroundUpdate([in] HDC hdc, [in] const RECT* updateRect</h3>
+		<div class="p3methodgdi">
+			<strong>GDI Render Cycle</strong><br/>
+			Called when the *pWhatToDo parameter of <i>OnBeforeGdiBackgroundUpdate</i> was set to <b>AVE_GDI_WANTS_TO_RENDER_OVER_DEFAULT_BG</b> and the normal background (wallpaper) has been rendered into the hdc. Allows the Effect to paint over the normal background of the desktop.<br/><br/>
+			<ul>
+
+				<li><b>hdc</b> is a handle to the device context used for drawing and can be used to modify the background or its properties</li>
+
+				<li><b>updateRect</b> a pointer to a rectangle describing the part of the desktop that gets updated</li>
+
+			</ul>
+		</div>
+
+		<h3 class="h3methodd3d">HRESULT OnBeforeIconBufferUpdate(void)</h3>
+		<div class="p3methodd3d">
+			<strong>D3D Render Cycle</strong><br/>
+			Called before the internal icon buffer is updated when in D3D rendering mode. The icon buffer is updated with the contents of the desktop icons whenever there are changes to the desktop icons and the next render cycle is started.<br/><br/>
+			At this point, the icon buffer <em>does not</em> contain an up to date reflection of the desktop icons yet.<br/><br/>
+			It might be possible that multiple updates to the desktop icons will get the icon buffer updated in one batch and result in one render cycle.
+		</div>
+
+		<h3 class="h3methodd3d">HRESULT OnAfterIconBufferUpdate(void)</h3>
+		<div class="p3methodd3d">
+			<strong>D3D Render Cycle</strong><br/>
+			Called after the internal icon buffer is updated when in D3D rendering mode. The icon buffer is updated with the contents of the desktop icons whenever there are changes to the desktop icons and the next render cycle is started. This callback might come into use when making use of the D3DRenderIconBuffer() function of the Host.<br/><br/>
+			At this point, the icon buffer <em>does</em> contain an up to date reflection of the desktops icons.<br/><br/>
+			It might be possible that multiple updates to the desktop icons will get the icon buffer updated in one batch and result in one render cycle.
+		</div>
+
+		<h3 class="h3methodd3d">HRESULT OnD3DRender([out] BOOL* pHasRendered))</h3>
+		<div class="p3methodd3d">
+			<strong>D3D Render Cycle</strong><br/>
+			Called when a D3D render cycle is started. This is usually initiated by the Effect calling the Host's <i>D3DRender()</i> method or by an external update to the desktop icons.<br/><br/>
+
+			This callback allows the Effect to take over the render cycle completely (beginning a scene, drawing into the scene, drawing the icon buffer, closing the scene and presenting). If an Effect chooses to do this, it must set *pHasRendered to TRUE so that DesktopEffects knows that the render cycle has been performed already.<br/><br/>
+
+			Normally, an Effect does nothing in this callback, but some Effects might want to take over the render cycle for performance reasons (for example, video rendering).
+		</div>
+
+		<h3 class="h3methodd3d">HRESULT OnBeforeD3DRender([out] DWORD* pBgColor)</h3>
+		<div class="p3methodd3d">
+			<strong>D3D Render Cycle</strong><br/>
+			Called when DesktopEffects' own rendering cycle will be started (thus, when it was not taken over by the effect in the <i>OnD3DRender()</i> callback).<br/><br/>
+			An effect gets the chance to do per-cycle initialization here and, <em>change the background color</em> of the D3D scene by setting the *pBgColor parameter to the preferred ARGB color.
+		</div>
+
+
+		<h3 class="h3methodd3d">HRESULT OnBeforeD3DSceneStart(void)</h3>
+		<div class="p3methodd3d">
+			<strong>D3D Render Cycle</strong><br/>
+			Called when DesktopEffects' own rendering cycle has been started after the device has been cleared, but before the D3D scene is started.<br/><br/>
+			The Effect can modify D3D parameters at this point.
+		</div>
+
+		<h3 class="h3methodd3d">HRESULT OnD3DSceneStart(void)</h3>
+		<div class="p3methodd3d">
+			<strong>D3D Render Cycle</strong><br/>
+			Called when DesktopEffects' own rendering cycle has started the D3D scene and did set it up correctly.<br/><br/>
+			By default, the Device is in a 2D render state with a quad VertexBuffer that is the size of the desktop, with direct mapping texture coords.</br><br/>
+			If the <em>AVE_SUPPORTS_D3D_DRAW_OVER_REAL_WALLPAPER</em> flag was returned by this Effect, the user's wallpaper will be drawn into the D3D scene at this point.<br/><br/>
+			<em>Usually, this is the function where a regular D3D effect does its own rendering of the desktops background</em>
+		</div>
+
+		<h3 class="h3methodd3d">HRESULT OnBeforeIconBufferRender(void)</h3>
+		<div class="p3methodd3d">
+			<strong>D3D Render Cycle</strong><br/>
+			Called when DesktopEffects' own rendering cycle has called the Effects <i>OnD3DSceneStart()</i> callback and DesktopEffects is about to render the desktops icons onto the D3D scene.<br/><br/>
+			At this point, the scene has the desktop background rendered, but not yet the icons.
+		</div>
+
+		<h3 class="h3methodd3d">HRESULT OnAfterIconBufferRender(void)</h3>
+		<div class="p3methodd3d">
+			<strong>D3D Render Cycle</strong><br/>
+			Called when DesktopEffects' own rendering cycle has called the Effects <i>OnD3DSceneStart()</i> callback and DesktopEffects has rendered the desktop icons into the D3D scene.<br/><br/>
+			<br/><br/>
+			At this point, the scene has the desktop background rendered and the desktop icons.
+		</div>
+
+
+		<h3 class="h3methodd3d">HRESULT OnD3DSceneEnd(void)</h3>
+		<div class="p3methodd3d">
+			<strong>D3D Render Cycle</strong><br/>
+			Called when DesktopEffects' own rendering cycle has drawn everything in the D3D scene and will <i>end the scene</i>.<br/><br/>
+			At this point, the scene has completely be rendered.
+		</div>
+
+
+		<h3 class="h3methodd3d">HRESULT OnBeforeD3DPresent(void)</h3>
+		<div class="p3methodd3d">
+			<strong>D3D Render Cycle</strong><br/>
+			Called when DesktopEffects' own rendering cycle is about to present the scene onto the real desktop.<br/><br/>
+			At this point, the scene is completely rendered and <i>ended</i>.
+		</div>
+
+		<h3 class="h3methodd3d">HRESULT OnAfterD3DPresent(void)</h3>
+		<div class="p3methodd3d">
+			<strong>D3D Render Cycle</strong><br/>
+			Called when DesktopEffects' own rendering cycle presented the D3D scene onto the real desktop.<br/><br/>
+			At this point, the user sees the just rendered frame on the real desktop.
+		</div>
+
+		<h3 class="h3methodd3d">HRESULT HRESULT OnAfterD3DRender(void)</h3>
+		<div class="p3methodd3d">
+			<strong>D3D Render Cycle</strong><br/>
+			Called when DesktopEffects' own rendering cycle has been completed.<br/><br/>
+			At this point, the D3D rendering cycle has been completed.
+		</div>
+
+<h3 class="h3method">HRESULT OnTargetWindowMessage([in] HWND hwnd, [in] UINT msg, [in] WPARAM wParam, [in] LPARAM lParam, [out] LRESULT* lResult, [out] BOOL* bHandled)</h3>
+		<div class="p3method">
+			Called when a Window Message is received by the target window on which the render will be performed.<br/>
+			The Effect get the possibility to, for example, track mouse movements on the desktop by tracing WM_MOUSEMOVE messages and responding accordingly. A good example would be a sparkle that follows the mouse cursor by watching for WM_MOUSEMOVE messages and adding sparks to the D3D scene on the places where the mouse is located.<br/><br/>
+			The parameters are analogue to the WndProc() parameters, with the exception of the bHandled parameter. An effect can set *bHandled to TRUE if it does not want to let the real window nor DesktopEffects handle the message.
+		</div>
+
+<h3 class="h3method">HRESULT GetConfigurationWindow([out] HWND* hwnd, [in] HWND parent)</h3>
+		<div class="p3method">
+			Called when a configuration window for this Effect is needed and the effect returned the <em>AVE_SUPPORTS_CONFIG</em> flag.<br/>
+			The configuration window must be prepared to run inside another window, thus should not have borders and must not be modal. The parent of the configuration window should be set to the parent parameter.<br/>A WM_AVE_EFFECTCONFIG_OK message will be sent to the configuration window, when the user clicks the 'OKAY' button.<br/>It is recommended, however, that changes are instantly applied to the rendering of the effect to give the user a live view of what a setting does.<br/><br/>
+			Set *hwnd to the handle of the created configuration window. The caller takes ownership of the window and will be responsible for destroying it.
+		</div>
+
+<h3 class="h3method">HRESULT OnNotification(DWORD dwNotification)</h3>
+		<div class="p3method">
+			Called when the Host needs to notify the Effect. The dwNotification parameter is set to one of the following:
+			<ul>
+				 <li><b>AVE_NOTIFICATION_BEFORE_WALLPAPER_CHANGED</b> The callback is called with this value if the user changed its real wallpaper, but DesktopEffect did not yet update its internal (D3D) wallpaper texture.</li>
+
+				 <li><b>AVE_NOTIFICATION_AFTER_WALLPAPER_CHANGED</b>The callback is called with this value if the user changed its real wallpaper and after DesktopEffect changed its internal (D3D) wallpaper texture.</li>
+			</ul>
+
+			As an example, the wallpaper notifications could be used by an 'automatic wallpaper fader' effect to keep track of the previous and current wallpaper texture of the user and, using D3D, provide a fading animation between the two wallpapers.
+		</div>
+
+		<h3 class="h3method">HRESULT DoesSupport([out] DWORD* pFlag)</h3>
+		<div class="p3method">
+			Called when DesktopEffects needs to know what the Effect supports. The following flags can be set to the *pFlag parameter by the effect to indicate that it supports the feature:
+			<ul>
+
+				<li><b>AVE_SUPPORTS_CONFIG</b> The effect supports a configuration window which can be obtained through the effects <i>GetConfigurationWindow()</i> method. </li>
+
+				<li><b>AVE_SUPPORTS_D3D_DRAW_OVER_REAL_WALLPAPER</b>In D3D mode, the effect supports drawing over the real wallpaper.<br/>If this flag is set by the effect, DesktopEffects' own rendering cycle will draw the real wallpaper into the D3D scene before calling any of the other D3D rendering callbacks.<br/> This allows an effect to simply show an effect between the wallpaper and the icons without rendering any of those itself. </li>
+
+			</ul>
+		</div>
+
+		<h3 class="h3method">HRESULT OnNotificationWindowMessage([in] HWND hwnd, [in] UINT msg, [in] WPARAM wParam, [in] LPARAM lParam, [out] LRESULT* lResult, [out] BOOL* bHandled)</h3>
+		<div class="p3method">
+			Called when a Window Message is received by the helper window of the effect.<br/>
+			The effect can create its own helper window by calling its Host <i>GetHelperWindow()</i> method. This helper window then can be used for timers and other messages.<br/>
+			The parameters are analogue to the WndProc() parameters, with the exception of the bHandled parameter. An effect can set *bHandled to TRUE iff it handled the window message.
+		</div>
+
+		</div>
+		
+
+
+		<h2>4.2 GDI Rendering Cycle</h2>
+		<div class="h2p">
+			XXX TODO
+		</div>
+
+		<h2>4.3 D3D Rendering Cycle</h2>
+		<div class="h2p">
+			XXX TODO
+		</div>
+
+		<h2>4.4 Registration</h2>
+		<div class="h2p">
+			DesktopEffects plugins are COM objects that implement <i>IAveDesktopEffect</i>, which means that every plugin has its own unique CLSID from the COM system which will be used to identify the plugin.<br/><br/>
+			To be able to list all possible DesktopEffect plugins, they must register themselves under the following <i>registry key</i>: 
+<pre>
+HKEY_LOCAL_MACHINE
+{
+    NoRemove SOFTWARE
+    {
+        NoRemove AveSoftware
+        {
+            NoRemove AveDesktopEffects
+            {
+                NoRemove Effects
+                {
+                    NoRemove YOUREFFECTNAME
+                    {
+                        val classid = s 'YOURCLSID'
+                    }
+                }
+            }
+        }
+    }
+}
+</pre>
+YOUREFFECTNAME must be changed to the name of your effect, for example, 'My Custom Effect'. <br/>
+YOURCLSID must be changed to the CLSID of your IAveDesktopEffect implementation.
+
+		</div>
+
+	</div>
+
+	<h1>5 IAveMultiMonitorHelper</h1>
+	<div class="h1p">
+		IAveMultiMonitorHelper is a Helper interface  for dealing with Multimonitor setups. This interface can
+		be obtained by <i>QueryInterface()'ing</i> the IAveDesktopEffectsHost object for <em>IID_IAveMultiMonitorHelper</em>.
+
+		<h2>5.1 Methods</h2>
+		<div class="h2p">
+			<h3 class="h3method">HRESULT GetMonitorCount([out]DWORD* pCount)</h3>
+			<div class="p3method">
+				Sets *pCount to the number of monitors on the system.
+			</div>
+
+			<h3 class="h3method">HRESULT GetMonitorRect([in]DWORD index, [out]RECT* pRect, [in]BOOL canvasCoords)</h3>
+			<div class="p3method">
+				Gets the bounding rectangle of one of the monitors in the system, indexed by the <i>index</i> parameter, and sets *pRect to this bounding rectangle.<br/>
+				If canvasCoords is set to TRUE, the coordinates of the bounding rectangle will be given
+				in coordinates of the canvas, otherwise the coordinates will be in screen coordinates. <br/>
+				For normal output onto a D3D scene or GDI canvas, one wants the canvas coordinates, thus canvasCoords is set to TRUE in that case.
+			</div>
+
+			<h3 class="h3method">HRESULT GetPrimaryMonitorIndex([out]DWORD* pIndex)</h3>
+			<div class="p3method">
+				Sets *pIndex to the index of the Primary monitor.
+			</div>
+
+			<h3 class="h3method">HRESULT SetD3DTo2DQuadForMonitor([in]DWORD index)</h3>
+			<div class="p3method">
+				If in D3D mode, this method updates the device for outputting a 2D quad onto the place
+				of one of the monitores index by the <i>index</i> parameter.
+			</div>
+
+			<h2>5.2 Common Scenario</h2>
+			<div class="h2p">
+				In D3D mode, a common scenario is to output a texture onto each monitor when rendering in 2D mode. The following code does this (error checking code has been ommited):
+<pre>
+IAveMultiMonitorHelper* mmHelper = NULL;
+host->QueryInterface(IID_IAveMultiMonitorHelper, (void**)&mmHelper);
+if(mmHelper != NULL)
+{
+	DWORD monitorCount = 0;
+	mmHelper->GetMonitorCount(&monitorCount);
+	for(DWORD i = 0; i < monitorCount; ++i)
+	{
+		mmHelper->SetD3DTo2DQuadForMonitor(monitorCount);
+		// additional rendering flags
+		directDevice->SetTexture(0,renderTexture);
+		directDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, 2);
+	}
+
+	mmHelper->Release();
+}
+
+</pre>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+
+</html>

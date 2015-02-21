@@ -13,6 +13,8 @@
 #define IDC_VIDEO                       201
 #define IDD_CONFIGDLG                   202
 #define IDBROWSE                        202
+#define IDC_CHECK1                      203
+#define IDC_OUTPUTPERMONITOR            203
 
 // Next default values for new objects
 // 
@@ -20,7 +22,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        203
 #define _APS_NEXT_COMMAND_VALUE         32768
-#define _APS_NEXT_CONTROL_VALUE         203
+#define _APS_NEXT_CONTROL_VALUE         204
 #define _APS_NEXT_SYMED_VALUE           103
 #endif
 #endif

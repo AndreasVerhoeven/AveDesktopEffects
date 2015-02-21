@@ -422,6 +422,10 @@ STDMETHODIMP CAveDesktopEffectScribble::OnTargetWindowMessage(HWND hwnd, UINT ms
 {
 	if(WM_LBUTTONDOWN == msg)
 	{
+		WCHAR className[1024] = {0};
+		GetClassName(hwnd, className, 1024);
+		BOOL isListView = _wcsicmp(className, L"SysListView32") == 0;
+
 		POINT ptMouse = {0};
 		ptMouse.x = GET_X_LPARAM(lParam); 
 		ptMouse.y = GET_Y_LPARAM(lParam); 
@@ -429,7 +433,7 @@ STDMETHODIMP CAveDesktopEffectScribble::OnTargetWindowMessage(HWND hwnd, UINT ms
 		LVHITTESTINFO hit = {0};
 		hit.pt = ptMouse;
 		SendMessage(hwnd, LVM_HITTEST, 0, (LPARAM)&hit);
-		if(LVHT_NOWHERE & hit.flags)
+		if(LVHT_NOWHERE & hit.flags || !isListView)
 		{
 			prevPoint = hit.pt;
 			*bHandled = TRUE;
@@ -522,5 +526,16 @@ STDMETHODIMP CAveDesktopEffectScribble::DoesSupport(DWORD* pFlag)
 
 	*pFlag = 0;//AVE_SUPPORTS_CONFIG;
 
+	return S_OK;
+}
+
+
+// Called when there is a message for the notification window.
+// Each effect gets its own notification helper window for use with timers,
+// thread marshalling and such.
+// By calling IAveDesktopEffectsHost::GetHelperWindow(this, &hwnd) this 
+// window will be created and a handle to it will be obtained.
+STDMETHODIMP CAveDesktopEffectScribble::OnNotificationWindowMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled)
+{
 	return S_OK;
 }

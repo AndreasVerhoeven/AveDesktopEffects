@@ -118,6 +118,8 @@ STDMETHODIMP CDesktopEffectVideoWallpaper::OnInitialize(IAveDesktopEffectsHost* 
 
 	wcscpy_s(fileName, MAX_PATH, val);
 
+	stretchOverWholeCanvas  = AveRegFuncs::ReadInt(HKEY_CURRENT_USER, L"SOFTWARE\\AveSoftware\\DesktopEffects\\VideoWallpaper", L"StretchOverWholeCanvas", TRUE) != FALSE;
+
 	return S_OK;
 }
 
@@ -150,6 +152,12 @@ STDMETHODIMP CDesktopEffectVideoWallpaper::OnStop(void)
 		host->StopD3DMode();
 
 	return S_OK;
+}
+
+void CDesktopEffectVideoWallpaper::SetStretchOverWholeCanvas(BOOL val)
+{
+	stretchOverWholeCanvas = val;
+	AveRegFuncs::WriteInt(HKEY_CURRENT_USER, L"SOFTWARE\\AveSoftware\\DesktopEffects\\VideoWallpaper", L"StretchOverWholeCanvas", stretchOverWholeCanvas);
 }
 
 void CDesktopEffectVideoWallpaper::SetFileName(const WCHAR* fileName)
@@ -307,7 +315,7 @@ HRESULT CDesktopEffectVideoWallpaper::StartVMR()
 	graphBuilder.QueryInterface(&mediaEventEx);
 
 	HWND hwnd = NULL;
-	host->GetTargetWindow(&hwnd);
+	host->GetHelperWindow((IUnknown*)(IAveDesktopEffect*)this, &hwnd);
 	if(hwnd != NULL)
 		mediaEventEx->SetNotifyWindow((OAHWND)hwnd, WM_AVE_MEDIA_EVENT, 0);
 
@@ -379,11 +387,34 @@ HRESULT CDesktopEffectVideoWallpaper::PresentImage(
 			renderTexture.Release();
 			renderTexture = videoTexture;
 		}
-		directDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
-		directDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-		directDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-        hRes = directDevice->SetTexture(0,videoTexture);
-		hRes = directDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, 2);
+
+		if(stretchOverWholeCanvas)
+		{
+			directDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+			directDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+			directDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+			hRes = directDevice->SetTexture(0,videoTexture);
+			hRes = directDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, 2);
+		}
+		else
+		{
+			CComQIPtr<IAveMultiMonitorHelper> mmHelper(host);
+			if(mmHelper != NULL)
+			{
+				DWORD monCount=0;
+				mmHelper->GetMonitorCount(&monCount);
+				for(DWORD i = 0; i < monCount; ++i)
+				{
+					mmHelper->SetD3DTo2DQuadForMonitor(i);
+					directDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+					directDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+					directDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+					hRes = directDevice->SetTexture(0,videoTexture);
+					hRes = directDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, 2);
+				}
+			}
+
+		}
         if (FAILED(hr))
         {
             return hr;
@@ -398,21 +429,46 @@ HRESULT CDesktopEffectVideoWallpaper::PresentImage(
         {
             return hr;
         }
-		directDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
-		directDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-		directDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-        hRes = directDevice->SetTexture(0,renderTexture);
-		hRes = directDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, 2);
+
+		if(stretchOverWholeCanvas)
+		{
+			directDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+			directDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+			directDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+			hRes = directDevice->SetTexture(0,renderTexture);
+			hRes = directDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, 2);
+		}
+		else
+		{
+			CComQIPtr<IAveMultiMonitorHelper> mmHelper(host);
+			if(mmHelper != NULL)
+			{
+				DWORD monCount=0;
+				mmHelper->GetMonitorCount(&monCount);
+				for(DWORD i = 0; i < monCount; ++i)
+				{
+					mmHelper->SetD3DTo2DQuadForMonitor(i);
+					directDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+					directDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+					directDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+					hRes = directDevice->SetTexture(0,renderTexture);
+					hRes = directDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, 2);
+				}
+			}
+		}
+
         if (FAILED(hr))
         {
             return hr;
         }
     }
 	
+	HWND targetWindow = NULL;
+	host->GetTargetWindow(&targetWindow);
 
 	host->D3DRenderIconBuffer(AVE_D3D_RENDERICONBUFFER_FULL);
 	hr  = directDevice->EndScene();
-    hr = directDevice->Present( NULL, NULL, NULL, NULL );
+    hr = directDevice->Present( NULL, NULL, targetWindow, NULL );
 
     return hr;
 }
@@ -450,8 +506,7 @@ STDMETHODIMP CDesktopEffectVideoWallpaper::OnD3DStart(IUnknown* directDeviceAsUn
 	if(NULL == directDeviceAsUnknown)
 		return E_INVALIDARG;
 
-	HWND hwnd = NULL;
-	host->GetTargetWindow(&hwnd);
+
 	
 	CLSID clsid = {0};
 	CLSIDFromString(L"{D0223B96-BF7A-43fd-92BD-A43B0D82B9EB}", &clsid);
@@ -465,7 +520,7 @@ STDMETHODIMP CDesktopEffectVideoWallpaper::OnD3DStart(IUnknown* directDeviceAsUn
 
 	/*
 	HWND hwnd = NULL;
-	host->GetTargetWindow(&hwnd);
+	host->GetHelperWindow(this, &hwnd);
 	if(hwnd != NULL)
 		SetTimer(hwnd, 1001, 20, 0);
 	*/
@@ -477,7 +532,7 @@ STDMETHODIMP CDesktopEffectVideoWallpaper::OnD3DStart(IUnknown* directDeviceAsUn
 STDMETHODIMP CDesktopEffectVideoWallpaper::OnD3DStop(void)
 {
 	HWND hwnd = NULL;
-	host->GetTargetWindow(&hwnd);
+	host->GetHelperWindow((IUnknown*)(IAveDesktopEffect*)this, &hwnd);
 	if(hwnd != NULL)
 		KillTimer(hwnd, 1001);
 
@@ -547,7 +602,7 @@ STDMETHODIMP CDesktopEffectVideoWallpaper::OnD3DRender(BOOL* pHasRendered)
 	// TODO: Add your implementation code here
 	*pHasRendered = TRUE;
 	HWND hwnd = NULL;
-	host->GetTargetWindow(&hwnd);
+	host->GetHelperWindow((IUnknown*)(IAveDesktopEffect*)this, &hwnd);
 	if(hwnd != NULL)
 		PostMessage(hwnd, WM_AVE_START_RENDERING, 0, 0);
 
@@ -640,14 +695,14 @@ STDMETHODIMP CDesktopEffectVideoWallpaper::OnAfterD3DRender(void)
 	return S_OK;
 }
 
-// Called when the target window (the desktops listview often) receives a message.
-// set lResult to the desired return value of the MsgProc and set bHandled to TRUE
-// if this message should not be passed to the original MsgProc of the target window.
-// If mouse interactivity is needed, this is the place to track mouse movements for example
-// by monitorin WM_MOUSEMOVE.
-STDMETHODIMP CDesktopEffectVideoWallpaper::OnTargetWindowMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled)
+// Called when there is a message for the notification window.
+// Each effect gets its own notification helper window for use with timers,
+// thread marshalling and such.
+// By calling IAveDesktopEffectsHost::GetHelperWindow(this, &hwnd) this 
+// window will be created and a handle to it will be obtained.
+STDMETHODIMP CDesktopEffectVideoWallpaper::OnNotificationWindowMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled)
 {
-	if(WM_AVE_START_RENDERING == msg)
+		if(WM_AVE_START_RENDERING == msg)
 	{
 		PresentImage(0, NULL);
 	}
@@ -680,6 +735,17 @@ STDMETHODIMP CDesktopEffectVideoWallpaper::OnTargetWindowMessage(HWND hwnd, UINT
 		host->D3DRender();
 		
 	}
+
+	return S_OK;
+}
+
+// Called when the target window (the desktops listview often) receives a message.
+// set lResult to the desired return value of the MsgProc and set bHandled to TRUE
+// if this message should not be passed to the original MsgProc of the target window.
+// If mouse interactivity is needed, this is the place to track mouse movements for example
+// by monitorin WM_MOUSEMOVE.
+STDMETHODIMP CDesktopEffectVideoWallpaper::OnTargetWindowMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* lResult, BOOL* bHandled)
+{
 	return S_OK;
 }
 
