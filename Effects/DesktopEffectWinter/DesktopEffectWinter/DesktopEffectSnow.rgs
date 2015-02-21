@@ -1,0 +1,35 @@
+HKCR
+{
+	NoRemove CLSID
+	{
+		ForceRemove {A9ABADD0-5490-4EE0-A472-CE07F530BBB0} = s 'DesktopEffectSnow Class'
+		{
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+		}
+	}
+}
+
+
+HKEY_LOCAL_MACHINE
+{
+    NoRemove SOFTWARE
+    {
+        NoRemove AveSoftware
+        {
+            NoRemove AveDesktopEffects
+            {
+                NoRemove Effects
+                {
+                    NoRemove WinterSnow
+                    {
+                        val classid = s '{A9ABADD0-5490-4EE0-A472-CE07F530BBB0}'
+                    }
+                }
+            }
+        }
+    }
+}

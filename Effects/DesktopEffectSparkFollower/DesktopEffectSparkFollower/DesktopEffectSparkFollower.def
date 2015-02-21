@@ -1,0 +1,9 @@
+; DesktopEffectSparkFollower.def : Declares the module parameters.
+
+LIBRARY      "DesktopEffectSparkFollower.DLL"
+
+EXPORTS
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE

@@ -1,0 +1,34 @@
+// DesktopEffectAutoFader.idl : IDL source for DesktopEffectAutoFader
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DesktopEffectAutoFader.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(FF51AC1F-9D92-401D-9C85-F25E3E72B28E),
+	helpstring("IDesktopEffectAutoWallpaperFader Interface"),
+	pointer_default(unique)
+]
+interface IDesktopEffectAutoWallpaperFader : IUnknown{
+};
+[
+	uuid(2F558584-B914-4D48-B86A-DFCE5C3244EB),
+	version(1.0),
+	helpstring("DesktopEffectAutoFader 1.0 Type Library")
+]
+library DesktopEffectAutoFaderLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(CF79C32A-9CFB-4C86-BC7F-CAEDC7FB98FB),
+		helpstring("DesktopEffectAutoWallpaperFader Class")
+	]
+	coclass DesktopEffectAutoWallpaperFader
+	{
+		[default] interface IDesktopEffectAutoWallpaperFader;
+	};
+};

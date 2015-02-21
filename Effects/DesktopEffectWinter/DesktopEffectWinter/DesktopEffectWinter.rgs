@@ -1,0 +1,11 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		'%APPID%' = s 'DesktopEffectWinter'
+		'DesktopEffectWinter.DLL'
+		{
+			val AppID = s '%APPID%'
+		}
+	}
+}

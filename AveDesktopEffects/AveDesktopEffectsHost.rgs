@@ -1,0 +1,43 @@
+HKCR
+{
+	AveDesktopEffects.AveDesktopEffectsHo.1 = s 'AveDesktopEffectsHost Class'
+	{
+		CLSID = s '{96443122-0A33-4C5B-AEB5-7309276D3C71}'
+	}
+	AveDesktopEffects.AveDesktopEffectsHost = s 'AveDesktopEffectsHost Class'
+	{
+		CLSID = s '{96443122-0A33-4C5B-AEB5-7309276D3C71}'
+		CurVer = s 'AveDesktopEffects.AveDesktopEffectsHo.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {96443122-0A33-4C5B-AEB5-7309276D3C71} = s 'AveDesktopEffectsHost Class'
+		{
+			ProgID = s 'AveDesktopEffects.AveDesktopEffectsHo.1'
+			VersionIndependentProgID = s 'AveDesktopEffects.AveDesktopEffectsHost'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{F0A020E4-2E81-4C6B-980E-A8EC1EB7AB3A}'
+		}
+	}
+}
+
+HKCR
+{
+  NoRemove Directory
+  {
+	NoRemove BackGround
+	{
+		NoRemove ShellEx
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove AveDesktopEffects = s '{96443122-0A33-4C5B-AEB5-7309276D3C71}'
+			}
+		}
+	  }
+	}
+}

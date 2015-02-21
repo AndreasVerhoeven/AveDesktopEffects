@@ -1,0 +1,34 @@
+// DesktopEffectUnderwater.idl : IDL source for DesktopEffectUnderwater
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DesktopEffectUnderwater.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(78DDFA41-420E-47D0-8D21-874D288BCAE8),
+	helpstring("IDesktopEffectWaterWallpaper Interface"),
+	pointer_default(unique)
+]
+interface IDesktopEffectWaterWallpaper : IUnknown{
+};
+[
+	uuid(AC3B9C43-779D-46B8-9A6A-23ACC126087F),
+	version(1.0),
+	helpstring("DesktopEffectUnderwater 1.0 Type Library")
+]
+library DesktopEffectUnderwaterLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(0F110EB8-E4BE-421D-9E71-5D580F220270),
+		helpstring("DesktopEffectWaterWallpaper Class")
+	]
+	coclass DesktopEffectWaterWallpaper
+	{
+		[default] interface IDesktopEffectWaterWallpaper;
+	};
+};

@@ -1,0 +1,20 @@
+
+HKEY_LOCAL_MACHINE
+{
+    NoRemove SOFTWARE
+    {
+        NoRemove AveSoftware
+        {
+            NoRemove AveDesktopEffects
+            {
+                NoRemove Effects
+                {
+                    NoRemove YOUREFFECTNAME
+                    {
+                        val classid = s 'YOURCLSID'
+                    }
+                }
+            }
+        }
+    }
+}

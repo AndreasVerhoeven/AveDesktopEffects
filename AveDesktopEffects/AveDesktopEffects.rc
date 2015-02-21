@@ -1,0 +1,232 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Dutch (Netherlands) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLD)
+#ifdef _WIN32
+LANGUAGE LANG_DUTCH, SUBLANG_DUTCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "1 TYPELIB ""AveDesktopEffects.tlb""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,1,0,1
+ PRODUCTVERSION 1,1,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "Andreas Verhoeven"
+            VALUE "FileDescription", "AveDesktopEffects Shell Extension"
+            VALUE "FileVersion", "1.1.0.1"
+            VALUE "InternalName", "AveDesktopEffects.dll"
+            VALUE "LegalCopyright", "(c) Andreas Verhoeven.  All rights reserved."
+            VALUE "OriginalFilename", "AveDesktopEffects.dll"
+            VALUE "ProductName", "AveDesktopEffects"
+            VALUE "ProductVersion", "1.1.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_AVEDESKTOPEFFECTS   REGISTRY                "AveDesktopEffects.rgs"
+IDR_AVEDESKTOPEFFECTSHOST REGISTRY                "AveDesktopEffectsHost.rgs"
+IDR_AVEDESKTOPEFFECT    REGISTRY                "AveDesktopEffect.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONFIGUREDLG DIALOGEX 0, 0, 329, 197
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU
+CAPTION "Desktop Effects Configuration"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LISTBOX         IDC_EFFECTS,7,22,315,151,LBS_OWNERDRAWFIXED | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,272,176,50,14
+    LTEXT           "Possible Effects",IDC_TOPLABEL,8,11,52,11
+    DEFPUSHBUTTON   "&Start",IDTOGGLE,215,176,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "Configure",IDCONFIG,7,176,50,14
+    LTEXT           "This version of Desktop Effects will expire on: ",IDC_EXPIRE1,9,11,148,8,NOT WS_VISIBLE
+    LTEXT           "%expirationDate%",IDC_EXPIRE2,160,11,151,8,NOT WS_VISIBLE
+END
+
+IDD_SLIDESHOWCONFIG DIALOGEX 0, 0, 322, 167
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Directory to take photos from",IDC_STATIC,18,16,96,8
+    EDITTEXT        IDC_WALLDIR,18,28,238,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Browse...",IDBROWSE,260,28,45,14
+    COMBOBOX        IDC_PHOTODURATIONPRESETS,19,74,96,45,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "seconds",IDC_CUSTOMINTERVALLABEL,174,75,27,8,NOT WS_VISIBLE
+    EDITTEXT        IDC_CUSTOMINTERVAL,121,73,46,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_VISIBLE
+    CONTROL         "",IDC_TRANSITIONSPEED,"msctls_trackbar32",TBS_NOTICKS | WS_TABSTOP,19,121,150,15
+    LTEXT           "Length of the transition between photos",IDC_STATIC,18,109,130,8
+    LTEXT           "Display each photo for",IDC_STATIC,18,61,73,8
+    LTEXT           "None",IDC_STATIC,23,139,18,8
+    LTEXT           "Lenghty",IDC_STATIC,143,139,27,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_CONFIGUREDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 322
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 190
+    END
+
+    IDD_SLIDESHOWCONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 315
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 160
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+IDR_PNG2                PNG                     "icon_smaller.png"
+IDR_PNG3                PNG                     "defaultwpicon.png"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_PROJNAME            "AveDesktopEffects"
+    IDS_MENUCONFIGURE       "Configure Desktop Effects"
+    IDS_MENUSTART           "Start Desktop Effects"
+    IDS_MENUSTOP            "Stop Desktop Effects"
+    IDS_ERRORSTARTING_SUBCLASSING 
+                            "Could not start Desktop Effects:\nSubclassing failed (internal error)"
+    IDS_ERRORSTARTING_NOTIFICATIONWINDOW 
+                            "Could not start Desktop Effects:\nNotification window not created (internal error)."
+    IDS_ERRORSTARTING       "Could not start Desktop Effects due to an internal error"
+    IDS_DESKTOPEFFECTSTITLE "Desktop Effects"
+    IDS_START               "&Start"
+    IDS_STOP                "&Stop"
+    IDS_SAMPLEEFFECTNAME    "Photo SlideShow"
+    IDS_SAMPLEEFFECTDESCRIPTION "Shows a slideshow of photos on the desktop."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CONFIGOK            "OK"
+    IDS_CONFIGBACK          "Back"
+    IDS_CONFIGTITLE         "Desktop Effects Configuration"
+    IDS_PRESET0             "5 seconds"
+    IDS_PRESET1             "10 seconds"
+    IDS_PRESET2             "30 seconds"
+    IDS_PRESET3             "one minute"
+    IDS_PRESET4             "two minutes"
+    IDS_PRESET5             "five minutes"
+    IDS_PRESET6             "ten minutes"
+    IDS_PRESET7             "15 minutes"
+    IDS_PRESET8             "half an hour"
+    IDS_PRESET9             "hour"
+    IDS_PRESET10            "custom..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_NOEFFECTNAME        "Default Wallpaper"
+    IDS_NOEFFECTDESCRIPTION "Shows the normal wallpaper, without any Effects."
+END
+
+#endif    // Dutch (Netherlands) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "AveDesktopEffects.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

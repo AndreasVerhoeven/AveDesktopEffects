@@ -1,0 +1,46 @@
+HKCR
+{
+	AveDesktopEffects.AveDesktopEffect.1 = s 'AveDesktopEffect Class'
+	{
+		CLSID = s '{BB813704-8B48-433E-A44E-E5311661D136}'
+	}
+	AveDesktopEffects.AveDesktopEffect = s 'AveDesktopEffect Class'
+	{
+		CLSID = s '{BB813704-8B48-433E-A44E-E5311661D136}'
+		CurVer = s 'AveDesktopEffects.AveDesktopEffect.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {BB813704-8B48-433E-A44E-E5311661D136} = s 'AveDesktopEffect Class'
+		{
+			ProgID = s 'AveDesktopEffects.AveDesktopEffect.1'
+			VersionIndependentProgID = s 'AveDesktopEffects.AveDesktopEffect'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{F0A020E4-2E81-4C6B-980E-A8EC1EB7AB3A}'
+		}
+	}
+}
+
+HKEY_LOCAL_MACHINE
+{
+    NoRemove SOFTWARE
+    {
+        NoRemove AveSoftware
+        {
+            NoRemove AveDesktopEffects
+            {
+                NoRemove Effects
+                {
+                    NoRemove MyTestEffect
+                    {
+                        val classid = s '{BB813704-8B48-433E-A44E-E5311661D136}'
+                    }
+                }
+            }
+        }
+    }
+}

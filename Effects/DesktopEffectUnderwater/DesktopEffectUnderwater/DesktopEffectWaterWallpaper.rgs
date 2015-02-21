@@ -1,0 +1,35 @@
+HKCR
+{
+
+	NoRemove CLSID
+	{
+		ForceRemove {0F110EB8-E4BE-421D-9E71-5D580F220270} = s 'DesktopEffectWaterWallpaper Class'
+		{
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+		}
+	}
+}
+
+HKEY_LOCAL_MACHINE
+{
+    NoRemove SOFTWARE
+    {
+        NoRemove AveSoftware
+        {
+            NoRemove AveDesktopEffects
+            {
+                NoRemove Effects
+                {
+                    NoRemove UnderwaterWallpaper
+                    {
+                        val classid = s '{0F110EB8-E4BE-421D-9E71-5D580F220270}'
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,34 @@
+// DesktopEffectWinter.idl : IDL source for DesktopEffectWinter
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DesktopEffectWinter.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(7245CD05-8A20-4ACC-A35F-FEAD5331222F),
+	helpstring("IDesktopEffectSnow Interface"),
+	pointer_default(unique)
+]
+interface IDesktopEffectSnow : IUnknown{
+};
+[
+	uuid(9BA3423C-BE88-41A1-B2CC-819C082A5E3D),
+	version(1.0),
+	helpstring("DesktopEffectWinter 1.0 Type Library")
+]
+library DesktopEffectWinterLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(A9ABADD0-5490-4EE0-A472-CE07F530BBB0),
+		helpstring("DesktopEffectSnow Class")
+	]
+	coclass DesktopEffectSnow
+	{
+		[default] interface IDesktopEffectSnow;
+	};
+};

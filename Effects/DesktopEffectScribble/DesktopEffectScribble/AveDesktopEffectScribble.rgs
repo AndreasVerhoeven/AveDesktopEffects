@@ -1,0 +1,36 @@
+HKCR
+{
+	NoRemove CLSID
+	{
+		ForceRemove {00D81C23-8E8C-45CE-BD1F-809EB4F26852} = s 'AveDesktopEffectScribble Class'
+		{
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+		}
+	}
+}
+
+
+
+HKEY_LOCAL_MACHINE
+{
+    NoRemove SOFTWARE
+    {
+        NoRemove AveSoftware
+        {
+            NoRemove AveDesktopEffects
+            {
+                NoRemove Effects
+                {
+                    NoRemove DesktopScribbler
+                    {
+                        val classid = s '{00D81C23-8E8C-45CE-BD1F-809EB4F26852}'
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+; DesktopEffectAutoFader.def : Declares the module parameters.
+
+LIBRARY      "DesktopEffectAutoFader.DLL"
+
+EXPORTS
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE

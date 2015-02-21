@@ -1,0 +1,36 @@
+// DesktopEffectVideo.idl : IDL source for DesktopEffectVideo
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DesktopEffectVideo.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+
+[
+	object,
+	uuid(7AC3FE8B-7830-407C-ADFA-8F4793BB5D9D),
+	helpstring("IDesktopEffectVideoWallpaper Interface"),
+	pointer_default(unique)
+]
+interface IDesktopEffectVideoWallpaper : IUnknown{
+};
+
+[
+	uuid(677A63BB-BC0D-4D51-8A2E-08B9A7E41C20),
+	version(1.0),
+	helpstring("DesktopEffectVideo 1.0 Type Library")
+]
+library DesktopEffectVideoLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(74C39C8B-7830-407C-ADFA-8F4792AA5D9D),
+		helpstring("DesktopEffectVideoWallpaper Class")
+	]
+	coclass DesktopEffectVideoWallpaper
+	{
+		[default] interface IDesktopEffectVideoWallpaper;
+	};
+};

@@ -1,0 +1,9 @@
+; DesktopEffectWinter.def : Declares the module parameters.
+
+LIBRARY      "DesktopEffectWinter.DLL"
+
+EXPORTS
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE

@@ -1,0 +1,35 @@
+// DesktopEffectScribble.idl : IDL source for DesktopEffectScribble
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DesktopEffectScribble.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "X:\coding\DesktopFxSDK\AveDesktopEffects.idl";
+
+[
+	object,
+	uuid(0225A8D1-A0D5-4438-AFF2-811C143C687A),
+	helpstring("IAveDesktopEffectScribble Interface"),
+	pointer_default(unique)
+]
+interface IAveDesktopEffectScribble : IUnknown{
+};
+[
+	uuid(EE9BFE0A-B1A4-4239-AB88-2C2AE2DBA65C),
+	version(1.0),
+	helpstring("DesktopEffectScribble 1.0 Type Library")
+]
+library DesktopEffectScribbleLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(00D81C23-8E8C-45CE-BD1F-809EB4F26852),
+		helpstring("AveDesktopEffectScribble Class")
+	]
+	coclass AveDesktopEffectScribble
+	{
+		[default] interface IAveDesktopEffectScribble;
+	};
+};

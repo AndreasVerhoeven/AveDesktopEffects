@@ -1,0 +1,94 @@
+// AveDesktopEffects.idl : IDL source for AveDesktopEffects
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (AveDesktopEffects.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(DC830845-6C17-48F9-932A-82979DFB3936),
+	helpstring("IAveDesktopEffectsHost Interface"),
+	pointer_default(unique)
+]
+interface IAveDesktopEffectsHost : IUnknown{
+	[helpstring("method Start")] HRESULT Start(void);
+	[helpstring("method Stop")] HRESULT Stop(void);
+	[helpstring("method IsRunning")] HRESULT IsRunning([out] VARIANT_BOOL* isRunning);
+	[helpstring("method GetTargetWindow")] HRESULT GetTargetWindow([out] HWND* targetWindow);
+	[helpstring("method LoadPluginByCLSID")] HRESULT LoadPluginByCLSID([in] BSTR clsid);
+	[helpstring("method IsD3DActive")] HRESULT IsD3DActive([out] VARIANT_BOOL* pIsActive);
+	[helpstring("method D3DRenderIconBuffer")] HRESULT D3DRenderIconBuffer([in] DWORD mode);
+	[helpstring("method StartD3DMode")] HRESULT StartD3DMode(void);
+	[helpstring("method StopD3DMode")] HRESULT StopD3DMode(void);
+	[helpstring("method D3DRender")] HRESULT D3DRender(void);
+	[helpstring("method MakeSureIsInitialized")] HRESULT MakeSureIsInitialized(void);
+	[helpstring("method GetWallpaperTexture")] HRESULT GetWallpaperTexture([out] IUnknown** texture);
+	[helpstring("method SetWallpaperTexture")] HRESULT SetWallpaperTexture([in] IUnknown* texture);
+};
+[
+	object,
+	uuid(77766B10-7FB8-49D6-895E-2A5B52EAB8E4),
+	helpstring("IAveDesktopEffect Interface"),
+	pointer_default(unique)
+]
+interface IAveDesktopEffect : IUnknown{
+	[helpstring("method GetName")] HRESULT GetName([out] BSTR* pName);
+	[helpstring("method GetAuthor")] HRESULT GetAuthor([out] BSTR* pAuthor);
+	[helpstring("method GetDescription")] HRESULT GetDescription([out] BSTR* pDescription);
+	[helpstring("method GetIcon")] HRESULT GetIcon([out] HBITMAP* pHBitmap);
+	[helpstring("method GetCooperationFlags")] HRESULT GetCooperationFlags([out] DWORD* pFlags);
+	[helpstring("method OnInitialize")] HRESULT OnInitialize([in] IAveDesktopEffectsHost* host);
+	[helpstring("method OnUninitialize")] HRESULT OnUninitialize(void);
+	[helpstring("method OnStart")] HRESULT OnStart(void);
+	[helpstring("method OnStop")] HRESULT OnStop(void);
+	[helpstring("method OnPause")] HRESULT OnPause(void);
+	[helpstring("method OnResume")] HRESULT OnResume(void);
+	[helpstring("method OnD3DStart")] HRESULT OnD3DStart([in] IUnknown* directDevice);
+	[helpstring("method OnD3DStop")] HRESULT OnD3DStop(void);
+	[helpstring("method OnBeforeGdiBackgroundUpdate")] HRESULT OnBeforeGdiBackgroundUpdate([in] HDC hdc, [in] const RECT* updateRect, [out] DWORD* pWhatToDo);
+	[helpstring("method OnAfterGdiBackgroundUpdate")] HRESULT OnAfterGdiBackgroundUpdate([in] HDC hdc, [in] const RECT* updateRect);
+	[helpstring("method OnBeforeIconBufferUpdate")] HRESULT OnBeforeIconBufferUpdate(void);
+	[helpstring("method OnAfterIconBufferUpdate")] HRESULT OnAfterIconBufferUpdate(void);
+	[helpstring("method OnD3DRender")] HRESULT OnD3DRender([out] BOOL* pHasRendered);
+	[helpstring("method OnBeforeD3DRender")] HRESULT OnBeforeD3DRender([out] DWORD* pBgColor);
+	[helpstring("method OnBeforeD3DSceneStart")] HRESULT OnBeforeD3DSceneStart(void);
+	[helpstring("method OnD3DSceneStart")] HRESULT OnD3DSceneStart(void);
+	[helpstring("method OnBeforeIconBufferRender")] HRESULT OnBeforeIconBufferRender(void);
+	[helpstring("method OnAfterIconBufferRender")] HRESULT OnAfterIconBufferRender(void);
+	[helpstring("method OnD3DSceneEnd")] HRESULT OnD3DSceneEnd(void);
+	[helpstring("method OnBeforeD3DPresent")] HRESULT OnBeforeD3DPresent(void);
+	[helpstring("method OnAfterD3DPresent")] HRESULT OnAfterD3DPresent(void);
+	[helpstring("method OnAfterD3DRender")] HRESULT OnAfterD3DRender(void);
+	[helpstring("method OnTargetWindowMessage")] HRESULT OnTargetWindowMessage([in] HWND hwnd, [in] UINT msg, [in] WPARAM wParam, [in] LPARAM lParam, [out] LRESULT* lResult, [out] BOOL* bHandled);
+	[helpstring("method GetConfigurationWindow")] HRESULT GetConfigurationWindow([out] HWND* hwnd, [in] HWND parent);
+	[helpstring("method OnNotification")] HRESULT OnNotification(DWORD dwNotification);
+	[helpstring("method DoesSupport")] HRESULT DoesSupport([out] DWORD* pFlag);
+};
+[
+	uuid(F0A020E4-2E81-4C6B-980E-A8EC1EB7AB3A),
+	version(1.0),
+	helpstring("AveDesktopEffects 1.0 Type Library")
+]
+library AveDesktopEffectsLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(96443122-0A33-4C5B-AEB5-7309276D3C71),
+		helpstring("AveDesktopEffectsHost Class")
+	]
+	coclass AveDesktopEffectsHost
+	{
+		[default] interface IAveDesktopEffectsHost;
+	};
+	[
+		uuid(BB813704-8B48-433E-A44E-E5311661D136),
+		helpstring("AveDesktopEffect Class")
+	]
+	coclass AveDesktopEffect
+	{
+		[default] interface IAveDesktopEffect;
+	};
+};

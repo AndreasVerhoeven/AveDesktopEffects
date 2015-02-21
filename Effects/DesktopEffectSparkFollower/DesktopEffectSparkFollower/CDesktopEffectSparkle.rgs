@@ -1,0 +1,33 @@
+HKCR
+{	NoRemove CLSID
+	{
+		ForceRemove {D9ED8807-9D64-4AC3-B1F2-C0FB05BD63AF} = s 'CDesktopEffectSparkle Class'
+		{
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+		}
+	}
+}
+
+HKEY_LOCAL_MACHINE
+{
+    NoRemove SOFTWARE
+    {
+        NoRemove AveSoftware
+        {
+            NoRemove AveDesktopEffects
+            {
+                NoRemove Effects
+                {
+                    NoRemove SparkleFollower
+                    {
+                        val classid = s '{D9ED8807-9D64-4AC3-B1F2-C0FB05BD63AF}'
+                    }
+                }
+            }
+        }
+    }
+}
